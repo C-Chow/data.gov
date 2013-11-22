@@ -14,7 +14,11 @@
         </p>
     </div>
     <div class="four columns omega right-align">
-        <p>Next.Data.Gov</p>
+        <span id="login" class="login">
+            <a href="/wp-admin" style="height:15px;">&nbsp;
+                <img src="<?php echo get_bloginfo('template_directory'); ?>/images/loginimage.png" height="20px" width="20px" alt="Login Link">
+            </a>
+        </span>
     </div>
 </div>
 
