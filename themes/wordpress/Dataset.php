@@ -24,9 +24,7 @@ $cat_slug = $category[0]->slug;
 <body class="single page post-<?php the_ID(); ?>">
 
 
-<div class="banner disclaimer">
-    <p>This is a demonstration site exploring the future of Data.gov. <span id="stop-disclaimer"> Give us your feedback on <a href="https://twitter.com/usdatagov">Twitter</a>, <a href="http://quora.com">Quora</a></span>, <a href="https://github.com/GSA/datagov-design/">Github</a>, or <a href="http://www.data.gov/contact-us">contact us</a></p>
-</div>
+
 <!-- Header Background Color, Image, or Visualization
 
 ================================================== -->
@@ -88,7 +86,7 @@ $cat_slug = $category[0]->slug;
 
 <div class="content">
 
-<div id="main-inner" class="dataset-inner" style="margin-top:30px;">
+<div id="main-inner" class="dataset-inner" style="margin-top:40px;">
 <div class="Appstitle" style="padding-left:5px; margin-bottom:10px">Datasets Published per Month</div>
 <div class="sixteen columns">
 
@@ -102,10 +100,12 @@ $cat_slug = $category[0]->slug;
     <th id="C_NumberofDatasetsampToolspublishedbymonth" class="views-field views-field-field-dataset-count datasets_published_per_month_table_head_fields" scope="col" rowspan="2"> Total in the Past 12 Months </th>
     <th id="C_NumberofDatasetsampToolspublishedbymonth" class="views-field views-field-field-ckan-id datasets_published_per_month_table_head_fields" scope="col" rowspan="2"> </th></tr>
 <tr class="datasets_published_per_month_row_tr_head">
-    <th></th>
     <?php
+    echo '<th></th>';
     for($i = 0; $i <= 11; $i++) {
+
         echo '<th class="datasets_published_per_month_table_head_calendar">';
+
         echo '<span class="datasets_published_month">';
         $current=12- date("m");
         if($i==0){
@@ -145,16 +145,20 @@ $cat_slug = $category[0]->slug;
 </tr>
 </thead>
 <tbody class="datasets_published_per_month_tbody">
-
-
+<div style="float: right;margin-left:280px;"> <?php the_content(); ?></div>
+<?php
+$metric_sync = $wpdb->get_var( "SELECT MAX(meta_value) FROM next_datagov.wp_postmeta WHERE meta_key = 'metric_sync_timestamp'");
+echo '<div style="font-style:italic;">';
+echo "Data last updated on: ". date("m/d/Y H:i A",$metric_sync)."<br />";
+?>
 
 
 <?php $count=0; ?>
 
 <?php
 $args = array(
-    'orderby'          => '',
-    'order'            => 'DESC',
+    'orderby'          => 'title',
+    'order'            => 'ASC',
     'post_type'        => 'metric_organization',
     'posts_per_page' => 500,
     'post_status'      => 'publish',
@@ -175,7 +179,7 @@ if( $query->have_posts() ) {
             if($count/2==0){
 
                 echo '<tr class="datasets_published_per_month_row_tr_even even">';
-                echo '<td class="datasets_published_per_month_table_row_fields">'; echo the_title();
+                echo '<td class="datasets_published_per_month_table_row_fields" style="color:#000000;">'; echo the_title();
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_1_dataset_count', TRUE )==0)
                 {
@@ -184,7 +188,7 @@ if( $query->have_posts() ) {
                 else
                 {
 
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_1_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_1_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_1_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_1_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_2_dataset_count', TRUE )==0)
@@ -193,7 +197,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_2_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_2_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_2_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_2_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_3_dataset_count', TRUE )==0)
@@ -202,7 +206,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_3_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_3_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_3_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_3_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_4_dataset_count', TRUE )==0)
@@ -212,7 +216,7 @@ if( $query->have_posts() ) {
                 else
                 {
 
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_4_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_4_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_4_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_4_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_5_dataset_count', TRUE )==0)
@@ -221,7 +225,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_5_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_5_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_5_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_5_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_6_dataset_count', TRUE )==0)
@@ -230,7 +234,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_6_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_6_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_6_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_6_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_7_dataset_count', TRUE )==0)
@@ -239,7 +243,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_7_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_7_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_7_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_7_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_8_dataset_count', TRUE )==0)
@@ -248,7 +252,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_8_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_8_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_8_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_8_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_9_dataset_count', TRUE )==0)
@@ -257,7 +261,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_9_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_9_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_9_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_9_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_10_dataset_count', TRUE )==0)
@@ -266,7 +270,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_10_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_10_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_10_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_10_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_11_dataset_count', TRUE )==0)
@@ -275,7 +279,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_11_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_11_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_11_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_11_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_12_dataset_count', TRUE )==0)
@@ -284,7 +288,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_12_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_12_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_12_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_12_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'metric_count', TRUE )==0)
@@ -293,7 +297,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'metric_url', TRUE ).'">'.get_post_meta($post->ID, 'metric_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'metric_url', TRUE ).'">'.get_post_meta($post->ID, 'metric_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 echo '</tr>';
@@ -313,7 +317,7 @@ if( $query->have_posts() ) {
                 else
                 {
 
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_1_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_1_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_1_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_1_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_2_dataset_count', TRUE )==0)
@@ -322,7 +326,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_2_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_2_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_2_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_2_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_3_dataset_count', TRUE )==0)
@@ -331,7 +335,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_3_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_3_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_3_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_3_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_4_dataset_count', TRUE )==0)
@@ -341,7 +345,7 @@ if( $query->have_posts() ) {
                 else
                 {
 
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_4_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_4_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_4_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_4_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_5_dataset_count', TRUE )==0)
@@ -350,7 +354,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_5_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_5_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_5_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_5_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_6_dataset_count', TRUE )==0)
@@ -359,7 +363,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_6_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_6_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_6_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_6_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_7_dataset_count', TRUE )==0)
@@ -368,7 +372,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_7_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_7_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_7_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_7_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_8_dataset_count', TRUE )==0)
@@ -377,7 +381,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_8_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_8_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_8_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_8_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_9_dataset_count', TRUE )==0)
@@ -386,7 +390,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_9_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_9_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_9_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_9_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_10_dataset_count', TRUE )==0)
@@ -395,7 +399,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_10_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_10_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_10_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_10_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_11_dataset_count', TRUE )==0)
@@ -404,7 +408,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_11_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_11_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_11_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_11_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'month_12_dataset_count', TRUE )==0)
@@ -413,7 +417,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'month_12_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_12_dataset_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'month_12_dataset_url', TRUE ).'">'.get_post_meta($post->ID, 'month_12_dataset_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 if(get_post_meta($post->ID, 'metric_count', TRUE )==0)
@@ -422,7 +426,7 @@ if( $query->have_posts() ) {
                 }
                 else
                 {
-                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a href="'.get_post_meta($post->ID, 'metric_url', TRUE ).'">'.get_post_meta($post->ID, 'metric_count', TRUE ).'</a>';
+                    echo '<td class="datasets_published_per_month_table_row_fields">'.'<a class="link_dataset" href="'.get_post_meta($post->ID, 'metric_url', TRUE ).'">'.get_post_meta($post->ID, 'metric_count', TRUE ).'</a>';
                 }
                 echo '</td>';
                 echo '</tr>';
@@ -705,7 +709,7 @@ if( $query->have_posts() ) {
             $parent = get_post_meta($post->ID, 'parent_agency', TRUE);
 
             if($parent)
-            $total=$total + get_post_meta($post->ID, 'metric_count', TRUE );
+                $total=$total + get_post_meta($post->ID, 'metric_count', TRUE );
 
             ?>
 
@@ -771,9 +775,9 @@ if( $query->have_posts() ) {
 <script>
     $(function () {
         var
-            $demo = $('#rotate-stats'),
-            strings = JSON.parse($demo.attr('data-strings')).targets,
-            randomString;
+                $demo = $('#rotate-stats'),
+                strings = JSON.parse($demo.attr('data-strings')).targets,
+                randomString;
 
         randomString = function () {
             return strings[Math.floor(Math.random() * strings.length)];

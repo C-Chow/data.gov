@@ -67,12 +67,14 @@ This template requires the following plugins:
 * bbPress - http://wordpress.org/plugins/bbpress/
 * Posts in Page - http://wordpress.org/plugins/posts-in-page/
 * WP-reCAPTCHA - http://wordpress.org/plugins/wp-recaptcha/
+* Subscribe2 - http://wordpress.org/plugins/subscribe2/
 	
 #### Locally hosted plugins
 * SAML 2.0 Single Sign-On - http://wordpress.org/plugins/saml-20-single-sign-on/
 * Custom Post View Generator - http://wordpress.org/plugins/custom-post-view-generator/
 * Metric Count	
 * Datagov Custom Post Types
+* ArcGis Map Validation
 
 ## Exportables
 This folder contains advanced custom fields definitions in xml format that can be imported manually via acf plugin.

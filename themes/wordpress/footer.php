@@ -1,16 +1,14 @@
 <div class="sixteen columns footer">
     <div class="twelve columns alpha">
         <p>
-            <a href="/about">About</a>
-            <a href="/accessibility">Accessibility</a>
-            <a href="/data-policy">Data Policy</a>
-            <a href="/faq">FAQ</a>
-            <a href="/glossary">Glossary</a>
-            <a href="/media">Media</a>
-            <a href="/privacy-policy">Privacy Policy</a>
-            <a href="/contact-us">Contact Us</a>
-            <a href="http://usa.gov">USA.gov</a>
-            <a href="http://performance.gov">performance.gov</a>
+            <?php
+            if ( is_user_logged_in() ) {
+                $args = array('category_name'=>'footer', 'categorize'=>0, 'title_li'=>0,'orderby'=>'rating','before'=>' ','after'=>' ','exclude'=>'336');
+            } else {
+                $args = array('category_name'=>'footer', 'categorize'=>0, 'title_li'=>0,'orderby'=>'rating','before'=>' ','after'=>' ','exclude'=>'337');
+            }
+            wp_list_bookmarks($args);
+            ?>
         </p>
     </div>
     <div class="four columns omega right-align">
