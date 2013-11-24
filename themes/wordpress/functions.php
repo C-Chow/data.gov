@@ -9,6 +9,13 @@ function enable_category_taxonomy_for_pages() {
     register_taxonomy_for_object_type('category','page');
 }
 
+// Menus
+
+function register_primary_menu() {
+  register_nav_menu('primary-menu',__( 'Primary Menu' ));
+}
+add_action( 'init', 'register_primary_menu' );
+
 //template for category blog
 function arphabet_widgets_init() {
 
