@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: Datagov Custom
-Description: This plugin holds custom types/taxnomies definitions, actions, filters etc.
+Plugin Name: Datagov Custom Post Types
+Description: This plugin holds custom types/taxnomies definitions
 Version: 1.0
 */
 
@@ -11,7 +11,6 @@ Version: 1.0
 //Custom Post Types
 
 #Challenges
-add_action('admin_menu', 'add_export_link');
 add_action('init', 'cptui_register_my_cpt_challenge');
 function cptui_register_my_cpt_challenge() {
 register_post_type('challenge', array(
@@ -266,51 +265,3 @@ array( 'hierarchical' => true,
 )
 ) ); 
 }
-
-#Migrate legacy Tags
-add_action('init', 'cptui_register_my_taxes_legacy_datacomm_tags');
-function cptui_register_my_taxes_legacy_datacomm_tags() {
-register_taxonomy( 'legacy_datacomm_tags',array (
-  0 => 'post',
-),
-array( 'hierarchical' => true,
-	'label' => 'Migrate legacy Tags',
-	'show_ui' => true,
-	'query_var' => true,
-	'show_admin_column' => false,
-	'labels' => array (
-  'search_items' => 'Migrate legacy Tag',
-  'popular_items' => '',
-  'all_items' => '',
-  'parent_item' => '',
-  'parent_item_colon' => '',
-  'edit_item' => '',
-  'update_item' => '',
-  'add_new_item' => '',
-  'new_item_name' => '',
-  'separate_items_with_commas' => '',
-  'add_or_remove_items' => '',
-  'choose_from_most_used' => '',
-)
-) ); 
-}
-
-function add_export_link(){
-    add_links_page('Download Links', 'Download Links', 8,'../wp-content/plugins/datagov-custom/wp_download_links.php', '');
-}
-
-/* Adds Subscribe2 support for custom post types */
-function my_post_types($types) {
-    $types = array('applications',
-      'arcgis_maps',
-      'attachment',
-      'challenge',
-      'events',
-      'metric_organization',
-      'page',
-      'qa_faqs',
-      'regional_planning'
-    );
-    return $types;
-}
-add_filter('s2_post_types', 'my_post_types');

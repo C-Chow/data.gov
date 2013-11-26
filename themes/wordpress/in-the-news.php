@@ -73,8 +73,8 @@ $cat_slug = $category[0]->slug;
   <!-- WordPress Content
     ================================================== -->
   <div class="category-content">
-    <div class="content" style="margin-top:20px;">
-
+    <div class="content">
+     
       <div class="sixteen columns">
           <div class="content">
               <?php
@@ -90,7 +90,8 @@ $cat_slug = $category[0]->slug;
           </div>
           </div>
       <!--  News -->
-        <?php $category = get_the_category();
+      <h1>In The News </h1>
+        <?php $category = get_the_category(); 
 							$cat_slug = $category[0]->slug;
 							//echo $cat_name;
 				?>

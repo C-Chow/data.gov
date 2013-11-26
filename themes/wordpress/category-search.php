@@ -14,20 +14,20 @@
     <div class="next-search">
         <div class="next-background"></div>
         <div class="next-object">
-         <!--   <div class="next-search-label">
+            <div class="next-search-label">
                 <label class="next" for="next-search-box">Search</label>
-            </div> -->
+            </div>
             <div class="next-search-icon">
                 <img src="<?php echo get_bloginfo('template_directory'); ?>/assets/search.png" alt="Category Search">
             </div>
             <div class="next-search-input">
                 <form method="get" action="http://catalog.data.gov/dataset">
-                    <label for="Search_TextBox" class="hddn" title="Search Data.gov">Search Data.gov</label>
-                    <input id="Search_TextBox" role="search" class="next" name="q" type="text" title="Start Searching"  onKeyUp="hidesearch();return false;"  >
+                    <label for="search-textbox" class="hddn" title="Search Data.gov">Search Data.gov</label>
+                    <input id="search-textbox" role="search" class="next" name="q" type="text" title="Start Searching"  onKeyUp="hidesearch();return false;"  >
                     <a href="#" id="bottle" onMouseOver="displaysearch();return false;" ><span id="g-search-button"></span></a>
                     <div id="searchlist" style="display:none; ">
-                        <label><input type="radio" id="SearchCatalog" name="SearchSite" value="" checked="true">&nbsp;&nbsp;Search Data Catalog</label><br>
-                        <label><input type="radio" id="SearchSite" name="SearchSite" value="">&nbsp;&nbsp;Search Site Content</label><br>
+                        <label><input type="checkbox" id="SearchCatalog" name="" value="" checked="true">&nbsp;&nbsp;Search Data Catalog</label><br>
+                        <label><input type="checkbox" id="SearchSite" name="SearchSite" value="SearchSite">&nbsp;&nbsp;Search Site Content</label><br>
                     </div>
                 </form>
             </div>
@@ -43,24 +43,13 @@
     };
 </script>
 <script type="text/javascript">
+    $('#search-textbox').blur(function() {
+        $("#searchlist").hide()
+    });
+
     $('#search-textbox').focus(function() {
-        $("#searchlist").show();
+        $("#searchlist").show()
     });
-    $( document ).ready(function() {
-        $( '#search-textbox' ).focusout( function() {
-            $( '#searchlist' ).hover(
-                    function() {
-                        return;
-                    },
-                    function() {
-                        $( '#searchlist' ).fadeOut( 'slow' );
-
-                    });
-        });
-    });
-
-
-
 </script>
 <script type="text/javascript">
     $('input[type="text"]').each(function(){

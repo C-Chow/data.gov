@@ -172,7 +172,6 @@ $cat_slug = $category[0]->slug;
                     <?php echo $post->post_content;?>
 
                 </div>
-                <?php get_template_part('footer'); ?>
             </div>
         </div>
     </div><!-- container -->

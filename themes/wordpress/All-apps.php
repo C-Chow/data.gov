@@ -25,28 +25,14 @@ $cat_slug = $category[0]->slug;
 ?>
 <script type="text/javascript">
 
-
-    $(document).ready(function(){
-
-        if ($(window).width() < 480) {
-            $('.bxslider').bxSlider({
-                minSlides: 1,
-                maxSlides: 1,
-                slideWidth: 220,
-                slideMargin: 10
-            });
-        }
-        else{
-            $('.bxslider').bxSlider({
-                minSlides: 3,
-                maxSlides: 4,
-                slideWidth: 220,
-                slideMargin: 10
-            });
-        }
-    });
-
-
+$(document).ready(function(){
+  $('.bxslider').bxSlider({
+	  minSlides: 3,
+  maxSlides: 4,
+  slideWidth: 220,
+  slideMargin: 10
+  });
+});
 </script>
 <body class="<?php echo $cat_slug;?>">
 <div class="banner disclaimer">
@@ -162,7 +148,7 @@ $cat_slug = $category[0]->slug;
            <?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>" style="height:85px;">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" style="height:85px;">
           </center>
         </div>
         <div id="itemcontent">
@@ -232,7 +218,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -285,7 +271,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -334,7 +320,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -385,7 +371,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -437,7 +423,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -488,7 +474,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -540,7 +526,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -591,7 +577,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -642,7 +628,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -693,7 +679,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -745,7 +731,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
@@ -797,7 +783,7 @@ $cat_slug = $category[0]->slug;
       <div id="webimage"><?php 
 				$imagefile=get_field_object('field_5240b9c982f41');
 		  ?>
-        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>" alt="<?php echo $imagefile['value']['alt']; ?>">
+        <img class="scale-with-grid" src="<?php echo $imagefile['value']['url']; ?>">
         </div>
         <div id="webcontent">
         <h2> <a href="<?php echo get_post_meta($post->ID, 'field_application_url', TRUE ); ?>">
