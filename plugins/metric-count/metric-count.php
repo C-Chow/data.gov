@@ -4,6 +4,9 @@ Plugin Name: Metric Count
 Description: This plugin makes API call to Ckan and stores dataset count for each organization.
 */
 
+/** Include PHPExcel */
+require_once 'Classes/PHPExcel.php';
+
 
 add_action('admin_menu', 'metric_configuration');
 
@@ -54,24 +57,23 @@ function ckan_metric_get_taxonomies() {
     $response =  wp_remote_get($url);
     $body = json_decode(wp_remote_retrieve_body(&$response), TRUE);
     $taxonomies = $body['taxonomies'];
+
     return $taxonomies;
 }
 
+
 function ckan_metric_convert_structure($taxonomies) {
-
     $ret = array();
-
     // This should be the ONLY loop that go thru all taxonomies.
     foreach ($taxonomies as $taxonomy) {
-
         $taxonomy = $taxonomy['taxonomy'];
-
         if (strlen($taxonomy['unique id']) == 0) { // bad ones
             continue;
         }
         if ($taxonomy['unique id'] != $taxonomy['term']) { // ignore 3rd level ones
             continue;
         }
+
         if (!isset($ret[$taxonomy['vocabulary']])) { // Make sure we got $ret[$sector]
             $ret[$taxonomy['vocabulary']] = array();
         }
@@ -95,11 +97,12 @@ function ckan_metric_convert_structure($taxonomies) {
                 'is_cfo' => $taxonomy['is_cfo'],
             );
         }
-        else { // This is agecny
+        else { // This is agency
             if (!isset($ret[$taxonomy['vocabulary']][$taxonomy['Federal Agency']])) {
                 // Has not been set by its subunits before
                 $ret[$taxonomy['vocabulary']][$taxonomy['Federal Agency']] = array(
                     'id' => $taxonomy['unique id'], // leave it without [ ] if no subs.
+                    'is_cfo' => $taxonomy['is_cfo'],
                     'subs' => array(),
                 );
             }
@@ -107,12 +110,12 @@ function ckan_metric_convert_structure($taxonomies) {
                 // Has been added by subunits before. so let us change it from [,sub_id1,sub_id2] to [id,sub_id1,sub_id2]
                 $ret[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['id'] = "[" . $taxonomy['unique id'] . trim($ret[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['id'], "[]") . "]";
             }
+
         }
+
     }
 
-
     return $ret;
-
 }
 
 function get_ckan_metric_info() {
@@ -120,6 +123,32 @@ function get_ckan_metric_info() {
     $taxonomies = ckan_metric_get_taxonomies();
     $structure = ckan_metric_convert_structure($taxonomies);
     $count = 0;
+
+    // Instantiate a new PHPExcel object
+    $objPHPExcel = new PHPExcel();
+    // Set the active Excel worksheet to sheet 0
+    $objPHPExcel->setActiveSheetIndex(0);
+    // Initialise the Excel row number
+    $rowcount = 1;
+
+    $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowcount, 'Agency Name');
+    $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowcount, 'Sub-Agency Name');
+    $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowcount, 'Datasets');
+    $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowcount, 'Last Entry');
+    $objPHPExcel->getActiveSheet()->getStyle('A'.$rowcount)->getFont()->setBold(true);
+    $objPHPExcel->getActiveSheet()->getStyle('B'.$rowcount)->getFont()->setBold(true);
+    $objPHPExcel->getActiveSheet()->getStyle('C'.$rowcount)->getFont()->setBold(true);
+    $objPHPExcel->getActiveSheet()->getStyle('D'.$rowcount)->getFont()->setBold(true);
+
+    $rowcount++;
+
+    chdir('../wp-content/uploads/');
+    $fp_csv = fopen('agency-list.csv', 'w');
+
+    if($fp_csv == false ){
+        die("unable to create file");
+    }
+    fputcsv($fp_csv, array('Agency Name', 'Sub-Agency Name', 'Datasets', 'Last Entry'));
 
     if(!empty($structure['Federal Organization'])) {
         foreach ($structure['Federal Organization'] as $unit => $unit_info) {
@@ -131,6 +160,10 @@ function get_ckan_metric_info() {
                 'is_cfo' => $unit_info['is_cfo'],
                 'subs' => $unit_info['subs'],
             );
+
+            if($item['name'] == 'Executive Office of the President'){
+                //var_dump($item['subs']);
+            }
 
             $orgs = trim($item['id'], "[,]");
             $orgs = explode(",", $orgs);
@@ -150,25 +183,39 @@ function get_ckan_metric_info() {
 
             $parent_nid = create_metric_content($item['is_cfo'], $item['name'], $item['id'], $orgs);
 
+
             //dataset published per month
             if(sizeof($item['subs']) > 0 && strlen($parent_org) > 0){
-                create_metric_content($item['is_cfo'], $item['name'], $parent_org, $orgs, $parent_nid, 1);
+                create_metric_content($item['is_cfo'], $item['name'], $parent_org, $orgs, $parent_nid, 1, $fp_csv,  $objPHPExcel, $rowcount);
+                $rowcount++;
             }
 
             if(sizeof($item['subs']) > 0 && strlen($parent_org) > 0){
-                create_metric_content($item['is_cfo'], "Department/Agency Level", $parent_org, "organization:" . urlencode($parent_org), $parent_nid);
+                create_metric_content($item['is_cfo'], "Department/Agency Level", $parent_org, "organization:" . urlencode($parent_org), $parent_nid, 0,$fp_csv, $objPHPExcel, $rowcount, $item['name']);
+                $rowcount++;
             }
 
 
             foreach($item['subs'] as $key=>$value) {
+
                 $orgs = 'organization:' . urlencode($value['id']);
-                create_metric_content($value['is_cfo'], $key, $value['id'], $orgs, $parent_nid);
+                create_metric_content($value['is_cfo'], $key, $value['id'], $orgs, $parent_nid, 0, $fp_csv, $objPHPExcel, $rowcount, $item['name'], 1);
+                $rowcount++;
             }
         }
     }
+
+    fclose($fp_csv);
+
+    // Instantiate a Writer to create an OfficeOpenXML Excel .xlsx file
+    $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+    // Write the Excel file to filename some_excel_file.xlsx in the current directory
+    $objWriter->save('agency-list.xls');
+
 }
 
-function create_metric_content($cfo, $title, $ckan_id, $orgs, $parent_node=0, $agency_level=0) {
+function create_metric_content($cfo, $title, $ckan_id, $orgs, $parent_node=0, $agency_level=0, $fp_csv = FALSE, $objPHPExcel = FALSE, $rowcount = 0, $parent_name='', $subagency = 0) {
+    $results = array();
 
     if(strlen($ckan_id) != 0) {
         $url = (get_option('ckan_access_pt') != '') ? get_option('ckan_access_pt') : 'http://catalog.data.gov/';
@@ -177,8 +224,10 @@ function create_metric_content($cfo, $title, $ckan_id, $orgs, $parent_node=0, $a
         $response = wp_remote_get($url);
         $body = json_decode(wp_remote_retrieve_body(&$response), true);
         $count = $body['result']['count'];
+
         $last_entry = $body['result']['results'][0]['metadata_modified'];
         $last_entry = substr($last_entry, 0, 10);
+        $metric_timestamp = time();
     }
     else
         $count = 0;
@@ -222,7 +271,18 @@ function create_metric_content($cfo, $title, $ckan_id, $orgs, $parent_node=0, $a
             $i++;
         }
     }
+
     $content_id = get_page_by_title($title, OBJECT, 'metric_organization')->ID;
+
+    if($subagency){
+        global $wpdb;
+        $myrows = $wpdb->get_var( "SELECT id FROM `wp_posts` p
+								   inner join wp_postmeta pm on pm.post_id = p.id
+								   where post_title = '".$title."' and post_type = 'metric_organization'
+								   and meta_key = 'ckan_unique_id' and meta_value = '".$ckan_id."'" );
+        $content_id = $myrows;
+    }
+
 
     if($title == "Department/Agency Level") {
         global $wpdb;
@@ -246,14 +306,17 @@ function create_metric_content($cfo, $title, $ckan_id, $orgs, $parent_node=0, $a
 
         add_post_meta($new_post_id, 'metric_count', $count);
 
+
         if($cfo == 'Y')
             add_post_meta($new_post_id, 'metric_sector', 'Federal');
         else
             add_post_meta($new_post_id, 'metric_sector', 'Other');
 
         add_post_meta($new_post_id, 'ckan_unique_id', $ckan_id);
-        add_post_meta($new_post_id, 'metric_sync_timestamp', $last_entry);
+        add_post_meta($new_post_id, 'metric_last_entry', $last_entry);
+        add_post_meta($new_post_id, 'metric_sync_timestamp', $metric_timestamp);
         add_post_meta($new_post_id, 'metric_url', ((get_option('ckan_access_pt') != '') ? get_option('ckan_access_pt') : 'http://catalog.data.gov/') . 'dataset?q=' . $orgs);
+
 
         if($parent_node != 0)
             add_post_meta($new_post_id, 'parent_organization', $parent_node);
@@ -288,8 +351,12 @@ function create_metric_content($cfo, $title, $ckan_id, $orgs, $parent_node=0, $a
         else
             update_post_meta($new_post_id, 'metric_sector', 'Other');
 
-        update_post_meta($new_post_id, 'metric_sync_timestamp', $last_entry);
+        update_post_meta($new_post_id, 'metric_last_entry', $last_entry);
+        update_post_meta($new_post_id, 'metric_sync_timestamp', $metric_timestamp);
         update_post_meta($new_post_id, 'metric_url', ((get_option('ckan_access_pt') != '') ? get_option('ckan_access_pt') : 'http://catalog.data.gov/') . 'dataset?q=' . $orgs);
+
+        if($parent_node != 0)
+            update_post_meta($new_post_id, 'parent_organization', $parent_node);
 
         if($agency_level != 0){
             for($i=0; $i<12; $i++){
@@ -303,6 +370,59 @@ function create_metric_content($cfo, $title, $ckan_id, $orgs, $parent_node=0, $a
             }
             update_post_meta($new_post_id,'parent_agency', 1, true);
         }
+
+    }
+    if($fp_csv){
+        if($parent_name){
+            $results['Agency'] = $parent_name;
+            $results['SubAgency'] = $title;
+        }else{
+            $results['Agency'] = $title;
+            $results['SubAgency'] = '';
+        }
+
+        $results['datasets'] = $count;
+        if($count > 0)
+            $results['last_entry'] = $last_entry;
+        else
+            $results['last_entry'] = 'NA';
+
+        // $results['cfo'] = $cfo;
+
+        fputcsv($fp_csv, $results);
+
+    }
+
+    if($objPHPExcel && $rowcount){
+        if($parent_name){
+            $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowcount, $parent_name);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowcount, $title);
+            if($count > 0){
+                $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowcount, $count);
+                $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowcount, $last_entry);
+            }
+            else{
+                $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowcount, 0);
+                $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowcount, 'NA');
+            }
+        }else{
+            $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowcount, $title);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowcount, '');
+            if($count > 0){
+                $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowcount, $count);
+                $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowcount, $last_entry);
+            }
+            else{
+                $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowcount, 0);
+                $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowcount, 'NA');
+            }
+
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$rowcount)->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getStyle('C'.$rowcount)->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getStyle('D'.$rowcount)->getFont()->setBold(true);
+        }
+
+
     }
 
     return $new_post_id;

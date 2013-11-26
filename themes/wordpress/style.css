@@ -1,5 +1,5 @@
 /*
-Theme Name: Next.Data.Gov
+Theme Name: Next.Data.Gov Jefferson
 Theme URI: http://data.gov/
 Description: A modern theme for http://data.gov
 Author: Innovative Fellows
@@ -17,13 +17,13 @@ Version: 1.0
 .customcontactform input[type='text']
 {
     width:50%;
-    margin:10px 10px 10px 0px;
+    margin:3px 10px 10px 0px;
 
 }
 .customcontactform input[type='checkbox']
 {
 
-    margin:10px 10px 10px 0px;
+    margin:3px 10px 10px 0px;
 
 }
 .customcontactform label
@@ -41,7 +41,7 @@ Version: 1.0
     width:50%;
     resize: none;
     overflow-y: hidden;
-    margin:10px 10px 10px 0px;
+    margin:3px 10px 10px 0px;
 }
 .customcontactform label.select
 {
@@ -53,7 +53,7 @@ Version: 1.0
 }
 .customcontactform select
 {
-    margin:10px 10px 10px 0px;
+    margin:3px 10px 10px 0px;
 
 
 }
@@ -90,6 +90,7 @@ Version: 1.0
     word-wrap: break-word;
 }
 /* End Web form */
+
 
 /* css for Category-Blogs */
 .cats .content .blog{
@@ -652,6 +653,20 @@ div#searchlist input[type="checkbox"]{
     top: -1px;
     *overflow: hidden;
 }
+div#searchlist input[type="radio"]{
+    border: 0 none;
+    border-radius: 0 0 0 0;
+
+    height: 20px;
+
+    width: 10px;
+    padding: 0;
+    margin:0;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+    *overflow: hidden;
+}
 div#searchlist label{
     display: block;
     padding-left: 15px;
@@ -790,31 +805,31 @@ thead th, th {
     color: #FFFFFE;
 }
 
-thead th {
+thead th,thead td {
     padding: 10px;
 }
 tbody {
     border-top: 1px solid #CCCCCC;
 }
-tr.even, tr.even td {
-    background-color: #EEEEEE;
-
-}
-tr.even, tr.even td a {
-    background-color: #EEEEEE;
-    text-decoration:none;
-    color:black;
-}
-tr.even, tr.odd {
-    background-color: #EEEEEE;
-
-    padding: 0.1em 0.6em;
-}
 tr.odd, tr.odd td {
-    background-color: #FFFFFF;
+
 
 }
 tr.odd, tr.odd td a {
+
+    text-decoration:none;
+    color:#4295B0;
+}
+tr.even, tr.odd {
+
+
+    padding: 0.1em 0.6em;
+}
+tr.even, tr.even td {
+    background-color: #FFFFFF;
+
+}
+tr.even, tr.even td a {
     background-color: #FFFFFF;
     text-decoration:none;
     color:#4295B0;
@@ -834,14 +849,14 @@ tr.odd, tr.odd td a {
     margin-top:15px;
 }
 .greyblock ul {
-    list-style:inherit;
+    list-style:disc outside none;
 
 }
 .greyblock li {
     margin-left:12px;
 }
 .greyblock ul li {
-    margin: 0; padding: 0;
+    padding: 0;
 }
 .greyblock ul li a{
     color: #4295B0;
@@ -954,7 +969,7 @@ a.btn-readmore {
 
 }
 
-.map-gallery-caption { width:200px;min-height:60px;}
+.map-gallery-caption { width:200px;min-height:70px;color: #666666;font: bold 12px Arial,Helvetica,sans-serif;}
 
 
 
@@ -963,12 +978,12 @@ a.btn-readmore {
 
     float: left;
 
-    margin: 0 20px;
+    margin: 0 10px;
 
 }
 .Apps-wrapper {
     margin-bottom: 20px;
-    position:relative;
+
 }
 .Apps-post {
     background-color: #FFFFFF;
@@ -1414,6 +1429,8 @@ margin-top: 0px !important;
 }
 .ag_button {
     background: linear-gradient(to bottom, #77B55A 5%, #72B352 100%) repeat scroll 0 0 #77B55A;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1, startColorstr='#77B55A', endColorstr='#72B352'); /* for IE */
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1, startColorstr='#77B55A', endColorstr='#72B352'); /* for IE */
     border: 1px solid #4B8F29;
     border-radius: 4px;
     box-shadow: 0 10px 14px -7px #3E7327;
@@ -1422,4 +1439,89 @@ margin-top: 0px !important;
     font-size: 16px !important;
     padding: 10px 15px;
     text-decoration: none;
+}
+.post-115912 ul ul ul{
+    font-size:100%;
+}
+ul#pagination li a{
+    color: #284A78;
+    margin-right:45px;
+    font-weight:bold;
+    float:right;
+}
+.gallery{
+    padding: 25px;
+    width: 60%;
+    border-style: dashed;
+    border-color: rgb(0, 0, 0);
+    -moz-border-top-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-image: none;
+    border-width: 1px 0pt;
+    font-size: 1.2em;
+    text-align: center;
+    margin: 0pt auto;
+}
+.gallery-center{
+    margin-top:20px;
+}
+.post-46152 .agriculture p a,.post-46152 .agriculture li a,.post-46152 .agriculture tr td a{color:#83B03C;
+
+}
+#open-data-sites-boxes.agencies .open-data-sites-box {
+    height: 30px;
+    margin: 10px 0 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 500px;
+}
+div.open-data-sites-box {
+    background: -moz-linear-gradient(center top , #FFFFFF 0%, #E6E6E6 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    display: block;
+    float: left;
+    height: 120px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    width: 120px;
+}
+#open-data-sites-boxes.agencies .open-data-sites-box .region {
+    float: left;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+}
+div.open-data-sites-box div.region {
+    color: #666666;
+
+}
+#open-data-sites-boxes.agencies .open-data-sites-box .numbers {
+    float: right;
+    font-size: 25px;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 0;
+}
+div.open-data-sites-box div.numbers {
+    color: #3366AC;
+}
+.challenges #cat-posts{margin-top:15px;}
+.openC {
+    margin-bottom: 25px;
+}
+.upcomingC {
+    margin-bottom: 25px;
+}
+tr.odd td a.link_dataset{
+
+    color: #4295B0;
+}
+tr.even td a.link_dataset{
+
+    color: #4295B0;
 }
