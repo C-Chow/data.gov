@@ -22,6 +22,11 @@
         <?php get_search_form(); ?>
       <?php endif; ?>      
       
+      <ul class="social-nav pull-right nav navbar-nav">
+          <li><a href="/contact/"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="/contact/"><i class="fa fa-stack-exchange"></i></a></li>  
+          <li><a href="/contact/"><i class="fa fa-envelope"></i></a></li>    
+      </ul>      
       
     </nav>    
   </div>
@@ -37,6 +42,7 @@
 <?php endif; ?>
 
 
+<?php if(!is_front_page()): ?>
 <div class="header banner page-heading">
     <div class="container">
         <div class="page-header">
@@ -46,7 +52,7 @@
         </div>
     </div>
 </div>
-
+<?php endif; ?>
 
 </header>
 
